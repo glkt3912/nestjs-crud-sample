@@ -1,26 +1,45 @@
-import { Injectable } from '@nestjs/common';
-import { CreateChampionDto } from './dto/create-champion.dto';
-import { UpdateChampionDto } from './dto/update-champion.dto';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { champion, Prisma } from '@prisma/client';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class ChampionService {
-  create(createChampionDto: CreateChampionDto) {
-    return 'This action adds a new champion';
+  constructor(private prisma: PrismaService) {}
+
+  create(data: Prisma.championCreateInput): Promise<champion> {
+    return this.prisma.champion.create({ data });
   }
 
-  findAll() {
-    return `This action returns all champion`;
+  findAll(): Promise<champion[]> {
+    return this.prisma.champion.findMany();
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} champion`;
+    return this.prisma.champion.findUnique({ where: { id } });
   }
 
-  update(id: number, updateChampionDto: UpdateChampionDto) {
-    return `This action updates a #${id} champion`;
+  search(keyword: string): Promise<champion[]> {
+    try {
+      return this.prisma.champion.findMany({
+        where: {
+          name: {
+            contains: keyword,
+          },
+        },
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} champion`;
+  update(id: number, data: Prisma.championUpdateInput): Promise<champion> {
+    return this.prisma.champion.update({
+      where: { id: id },
+      data,
+    });
+  }
+
+  delete(id: number): Promise<champion> {
+    return this.prisma.champion.delete({ where: { id: id } });
   }
 }
