@@ -1,7 +1,7 @@
 # Usage: ./deploy_gcr.sh <service-name> <cloudsql-instance-name>
 
 gcloud run deploy $1 \
-    --source . \
+    --source . \ 
     --platform=managed \
     --region=asia-northeast1 \
     --allow-unauthenticated \

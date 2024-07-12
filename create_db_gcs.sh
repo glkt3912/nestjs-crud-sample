@@ -7,4 +7,6 @@ gcloud sql instances create $1 \
     --storage-type=HDD \
     --storage-size=10GB \
     --region=asia-northeast1 \
+    --set-env-vars PORT=8087 \
+
 
