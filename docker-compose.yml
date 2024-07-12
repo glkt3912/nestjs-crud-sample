@@ -1,0 +1,20 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: nestjs-crud-sample-sql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: sampledb
+    restart: always
+    networks:
+      - mysql-network
+  cli:
+    image: mysql:8.0
+    networks:
+      - mysql-network
+    command: mysql -hdb -uroot -ppassword sampledb
+networks:
+  mysql-network:
+    driver: bridge
