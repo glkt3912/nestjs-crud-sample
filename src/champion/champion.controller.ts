@@ -27,7 +27,7 @@ export class ChampionController {
   // キーワードに基づいてChamaionを検索する
   @Get('search')
   async search(@Query('keyword') keyword: string) {
-    return await this.championService.search(keyword);
+    return this.championService.search(keyword);
   }
 
   @Get(':id')
