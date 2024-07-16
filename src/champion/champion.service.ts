@@ -34,10 +34,15 @@ export class ChampionService implements CrudService<champion> {
   }
 
   update(id: number, data: Prisma.championUpdateInput): Promise<champion> {
-    return this.prisma.champion.update({
-      where: { id: id },
-      data,
-    });
+    try {
+      const champion = this.prisma.champion.update({
+        where: { id: id },
+        data: { ...data },
+      });
+      return champion;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async delete(id: number): Promise<void> {

@@ -14,9 +14,9 @@ datasource db {
 }
 
 model champion {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   name        String
   role        String
-  releaseDate DateTime
+  releaseDate DateTime?
   discription String?
 }

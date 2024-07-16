@@ -3,11 +3,11 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Query,
   Delete,
   BadRequestException,
+  Put,
 } from '@nestjs/common';
 import { ChampionService } from './champion.service';
 import { champion, Prisma } from '@prisma/client';
@@ -39,7 +39,7 @@ export class ChampionController {
     return this.championService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   async update(
     @Param('id') id: number,
     @Body() data: Prisma.championUpdateInput,
