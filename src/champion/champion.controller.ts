@@ -7,6 +7,7 @@ import {
   Param,
   Query,
   Delete,
+  BadRequestException,
 } from '@nestjs/common';
 import { ChampionService } from './champion.service';
 import { champion, Prisma } from '@prisma/client';
@@ -26,8 +27,11 @@ export class ChampionController {
   }
   // キーワードに基づいてChamaionを検索する
   @Get('search')
-  async search(@Query('keyword') keyword: string) {
-    return this.championService.search(keyword);
+  async search(@Query('name') name?: string): Promise<champion[]> {
+    if (!name) {
+      throw new BadRequestException('Name query parameter is required');
+    }
+    return this.championService.search(name);
   }
 
   @Get(':id')
@@ -44,7 +48,7 @@ export class ChampionController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<champion> {
-    return this.championService.delete(+id);
+  async delete(@Param('id') id: number) {
+    await this.championService.delete(+id);
   }
 }

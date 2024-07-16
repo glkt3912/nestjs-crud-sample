@@ -1,9 +1,10 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { champion, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
+import { CrudService } from 'src/interfaces/crud.interfaces';
 
 @Injectable()
-export class ChampionService {
+export class ChampionService implements CrudService<champion> {
   constructor(private prisma: PrismaService) {}
 
   create(data: Prisma.championCreateInput): Promise<champion> {
@@ -18,12 +19,12 @@ export class ChampionService {
     return this.prisma.champion.findUnique({ where: { id } });
   }
 
-  search(keyword: string): Promise<champion[]> {
+  search(name: string): Promise<champion[]> {
     try {
       return this.prisma.champion.findMany({
         where: {
           name: {
-            contains: keyword,
+            equals: name,
           },
         },
       });
@@ -39,7 +40,14 @@ export class ChampionService {
     });
   }
 
-  delete(id: number): Promise<champion> {
-    return this.prisma.champion.delete({ where: { id: id } });
+  async delete(id: number): Promise<void> {
+    try {
+      await this.prisma.champion.delete({ where: { id } });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        throw new InternalServerErrorException(error.message);
+      }
+      throw error;
+    }
   }
 }
