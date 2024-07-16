@@ -6,4 +6,3 @@ gcloud run deploy $1 \
     --region=asia-northeast1 \
     --allow-unauthenticated \
     --add-cloudsql-instances $2 \
-    --set-env-vars PORT=8087 \
