@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 docker run -e MYSQL_ROOT_PASSWORD=password \
   -e DATABASE_URL=sampledb \
