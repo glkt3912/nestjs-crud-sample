@@ -30,7 +30,14 @@ $ ./shell/create_db_gcs.sh <instance_name>
 
 ### 環境変数の用意
 
-Cloud Runに環境変数を用意するので、下記（ローカル）はおそらく不要
+#### Cloud Runに環境変数を用意
+
+* DATABASE_URL
+  - mysql://sample_user:password@127.0.0.1:3306/sample_db
+* INSTANCE_CONNECTION_NAME
+  - $PROJECT_ID:$REGION:$SQL_INSTANCE_NAME
+
+以下ローカルで検証しない限りは不要
 
 ```bash
 # eg
