@@ -51,4 +51,9 @@ export class ChampionController {
   async delete(@Param('id') id: number) {
     await this.championService.delete(+id);
   }
+
+  @Delete('delete/all')
+  async deleteAll() {
+    await this.championService.deleteAll();
+  }
 }

@@ -55,4 +55,13 @@ export class ChampionService implements CrudService<champion> {
       throw error;
     }
   }
+
+  async deleteAll(): Promise<void> {
+    try {
+      // 開発環境や導入段階でのみ使用想定。　もしくは論理削除想定
+      await this.prisma.champion.deleteMany({});
+    } catch (error) {
+      throw new InternalServerErrorException(error);
+    }
+  }
 }
