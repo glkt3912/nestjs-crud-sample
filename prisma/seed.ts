@@ -81,37 +81,34 @@ const newChampions = [
 ];
 
 async function main() {
-  const existingChampionsCount = await prisma.champion.count();
-  if (existingChampionsCount === 0) {
-    const tableName = 'champion';
-    console.log('Champion Table is empty, reset IDs.');
-    await prisma.$executeRawUnsafe(
-      `ALTER TABLE ${tableName} AUTO_INCREMENT = 1;`, // MySQL
-    );
-  }
+  await prisma.$transaction(async (prisma) => {
+    const existingChampionsCount = await prisma.champion.count();
+    if (existingChampionsCount === 0) {
+      console.log('Champion Table is empty, reset IDs.');
+    }
 
-  const existingChampions = await prisma.champion.findMany({
-    select: {
-      name: true,
-    },
-  });
-  const existingNames = existingChampions.map((champ) => champ.name);
-
-  const championsToAdd = newChampions.filter(
-    (champ) => !existingNames.includes(champ.name),
-  );
-
-  if (championsToAdd.length > 0) {
-    await prisma.champion.createMany({
-      data: championsToAdd,
+    const existingChampions = await prisma.champion.findMany({
+      select: {
+        name: true,
+      },
     });
-  }
+    const existingNames = existingChampions.map((champ) => champ.name);
+
+    const championsToAdd = newChampions.filter(
+      (champ) => !existingNames.includes(champ.name),
+    );
+
+    if (championsToAdd.length > 0) {
+      await prisma.champion.createMany({
+        data: championsToAdd,
+      });
+    }
+  });
 }
 
 main()
   .catch((e) => {
     console.error(e);
-    console.error(e.stack);
     process.exit(1);
   })
   .finally(async () => {
