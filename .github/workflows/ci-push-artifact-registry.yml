@@ -7,7 +7,7 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: nestjs-crud-sample
   REGION: ${{ secrets.GCP_REGION }}
   IMAGE_TAG: latest
 

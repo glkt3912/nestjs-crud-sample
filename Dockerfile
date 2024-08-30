@@ -16,7 +16,7 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/start.sh ./start.sh
-COPY ./proxy/cloud-sql-proxy /usr/local/bin/
+RUN if [ -f ./proxy/cloud-sql-proxy ]; then cp ./proxy/cloud-sql-proxy /usr/local/bin/ fi
 RUN chmod +x /usr/local/bin/cloud-sql-proxy
 EXPOSE 8080
 RUN chmod +x ./start.sh
