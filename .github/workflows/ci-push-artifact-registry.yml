@@ -27,13 +27,12 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1
         with:
           project_id: ${{ env.PROJECT_ID }}
-          service_account_key: ${{ secrets.GCLOUD_AUTH }}
 
       - name: Configure Docker
-        run: gcloud auth configure-docker ${REGION}-docker.pkg.dev
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
 
       - name: Build the Docker image
-        run: docker build --platform linux/amd64 -t ${REGION}-docker.pkg.dev/${PROJECT_ID}/${IMAGE_NAME}:${IMAGE_TAG} .
+        run: docker build --platform linux/amd64 -t ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
 
       - name: Push the Docker image to Artifact Registry
-        run: docker push ${REGION}-docker.pkg.dev/${PROJECT_ID}/${IMAGE_NAME}:${IMAGE_TAG}
+        run: docker push ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
