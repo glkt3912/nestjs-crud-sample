@@ -37,7 +37,6 @@ $ ./shell/create_db_gcs.sh <instance_name>
 * INSTANCE_CONNECTION_NAME
   - $PROJECT_ID:$REGION:$SQL_INSTANCE_NAME
 
-以下ローカルで検証しない限りは不要
 
 ```bash
 # eg
