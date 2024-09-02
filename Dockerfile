@@ -6,6 +6,7 @@ RUN yarn install
 COPY prisma ./prisma
 RUN npx prisma generate
 COPY . .
+COPY proxy ./proxy
 RUN yarn build
 
 FROM node:20 as runner
