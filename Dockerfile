@@ -6,7 +6,6 @@ RUN yarn install
 COPY prisma ./prisma
 RUN npx prisma generate
 COPY . .
-COPY proxy ./proxy
 RUN yarn build
 
 FROM node:20 as runner
@@ -17,7 +16,7 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/start.sh ./start.sh
-COPY --from=builder /app/proxy/cloud-sql-proxy /usr/local/bin/cloud-sql-proxy
+COPY --from=builder /app/cloud-sql-proxy /usr/local/bin/cloud-sql-proxy
 RUN chmod +x /usr/local/bin/cloud-sql-proxy
 EXPOSE 8080
 RUN chmod +x ./start.sh
